@@ -1,0 +1,287 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Weather and Seasons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: one friendly column — Learn the words, then Task 1 (listen) and Task 2 (complete) as tabs */
+:root{
+  --bg:#FFFFFF; --surface:#F4F8FF; --ink:#13294B; --muted:#55657F;
+  --primary:#1E6FD9; --primary-soft:#DCEBFF; --sun:#FFC83D; --on-sun:#13294B; --tab-sub:#DCEBFF;
+  --good:#1FA67A; --good-soft:#DDF6EC; --bad:#E0483A; --bad-soft:#FFE3DF; --line:#D6E4F5;
+  --display:"Baloo 2","Nunito",system-ui,sans-serif; --body:"Nunito",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1E36; --surface:#16294A; --ink:#EEF5FF; --muted:#A9BCD8;
+  --primary:#4D97FF; --primary-soft:#1D3966; --sun:#FFD15C; --on-sun:#13294B; --tab-sub:#DCEBFF;
+  --good:#46D19F; --good-soft:#163A30; --bad:#FF7A6C; --bad-soft:#41201E; --line:#2A4570; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1E36; --surface:#16294A; --ink:#EEF5FF; --muted:#A9BCD8;
+  --primary:#4D97FF; --primary-soft:#1D3966; --sun:#FFD15C; --on-sun:#13294B; --tab-sub:#DCEBFF;
+  --good:#46D19F; --good-soft:#163A30; --bad:#FF7A6C; --bad-soft:#41201E; --line:#2A4570; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.level{font-weight:800;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--on-sun);
+  background:var(--sun);padding:4px 12px;border-radius:999px;display:inline-block}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,2.8rem);line-height:1.05;margin:6px 0 0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:1.5rem;margin:0;line-height:1.2}
+.sub{color:var(--muted);margin:2px 0 0}
+.speed{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.speed button{border:0;background:transparent;color:var(--muted);font:800 .9rem var(--body);padding:8px 14px;border-radius:999px;cursor:pointer}
+.speed button[aria-pressed="true"]{background:var(--primary);color:#fff}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:12px 8px;
+  font:800 1rem var(--body);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tab small{font-weight:700;color:var(--muted);font-size:.8rem}
+.tab[aria-selected="true"]{border-color:var(--primary);background:var(--primary);color:#fff}
+.tab[aria-selected="true"] small{color:var(--tab-sub)}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:16px}
+.hint{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:12px 16px;color:var(--muted);margin:0}
+.group-label{font-weight:800;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 -4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.card{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:20px;padding:16px 10px 14px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--body);transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:var(--primary)}
+.card.playing{border-color:var(--sun);box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 35%,transparent)}
+.pic{font-size:3.2rem;line-height:1.1}
+.word{font-family:var(--display);font-weight:800;font-size:1.45rem;line-height:1.1}
+.ex{font-size:.88rem;color:var(--muted)}
+.spk{font-size:.8rem;font-weight:800;color:var(--primary)}
+.box{background:var(--surface);border:2px solid var(--line);border-radius:24px;padding:22px clamp(16px,4vw,32px);display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center}
+.progress{width:100%;display:flex;align-items:center;gap:10px;font-weight:800;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.bar{flex:1;height:10px;background:var(--primary-soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--primary);width:0;transition:width .3s}
+.big-listen{border:0;background:var(--sun);color:var(--on-sun);font:800 1.15rem var(--body);padding:16px 28px;border-radius:999px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.big-listen:hover{filter:brightness(1.08)}
+.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%}
+.choice{border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:18px;padding:14px 8px;cursor:pointer;font:800 1.1rem var(--body);
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-height:96px;justify-content:center}
+.choice .pic{font-size:2.8rem}
+.choice:hover:not(:disabled){border-color:var(--primary)}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice:disabled{cursor:default}
+.scene{font-size:4.2rem;line-height:1}
+.sentence{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,4.5vw,1.9rem);line-height:1.25;margin:0;text-wrap:balance}
+.gap{display:inline-block;min-width:4.5em;border-bottom:3px solid var(--primary);color:var(--primary)}
+.words .choice{min-height:60px;font-size:1.2rem}
+.feedback{min-height:1.6em;font-weight:800;font-size:1.05rem;margin:0}
+.feedback.ok{color:var(--good)} .feedback.no{color:var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{border:2px solid var(--primary);background:transparent;color:var(--primary);font:800 1rem var(--body);padding:10px 22px;border-radius:999px;cursor:pointer}
+.btn.solid{background:var(--primary);color:#fff}
+.done .stars{font-size:2.6rem;letter-spacing:4px}
+.done .score{font-family:var(--display);font-weight:800;font-size:2.4rem;margin:0;font-variant-numeric:tabular-nums}
+.novoice{background:var(--bad-soft);color:var(--ink);border-radius:14px;padding:12px 16px;margin:0}
+@media (max-width:560px){.choices{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <span class="level">English · A1</span>
+      <h1>Weather and Seasons</h1>
+      <p class="sub">Listen, learn, and play.</p>
+    </div>
+    <div class="speed" role="group" aria-label="Voice speed">
+      <button type="button" id="spd-slow" data-rate="0.65" aria-pressed="true">🐢 Slow</button>
+      <button type="button" id="spd-normal" data-rate="0.9" aria-pressed="false">🐇 Normal</button>
+    </div>
+  </header>
+
+  <p class="novoice" id="novoice" hidden>This browser cannot play the voice. Please open the page in Chrome, Edge or Safari.</p>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-learn" aria-selected="true" data-panel="learn">Learn<small>10 words</small></button>
+    <button class="tab" role="tab" id="tab-t1" aria-selected="false" data-panel="t1">Task 1<small>Listen &amp; choose</small></button>
+    <button class="tab" role="tab" id="tab-t2" aria-selected="false" data-panel="t2">Task 2<small>Complete it</small></button>
+  </nav>
+
+  <!-- LEARN -->
+  <section class="panel" id="learn">
+    <p class="hint">Tap a picture. Listen to the word. Say it out loud!</p>
+    <p class="group-label">The weather</p>
+    <div class="cards" id="cards-weather"></div>
+    <p class="group-label">The seasons</p>
+    <div class="cards" id="cards-seasons"></div>
+  </section>
+
+  <!-- TASK 1 -->
+  <section class="panel" id="t1" hidden>
+    <p class="hint"><b>Task 1.</b> Press <b>Listen</b>. Then tap the correct picture.</p>
+    <div class="box" id="t1-box"></div>
+  </section>
+
+  <!-- TASK 2 -->
+  <section class="panel" id="t2" hidden>
+    <p class="hint"><b>Task 2.</b> Look at the picture. Read the sentence. Choose the missing word.</p>
+    <div class="box" id="t2-box"></div>
+  </section>
+</div>
+
+<script>
+const WORDS = [
+  {w:"rainy",  pic:"🌧️", ex:"It's rainy.",  type:"weather"},
+  {w:"windy",  pic:"💨", ex:"It's windy.",  type:"weather"},
+  {w:"sunny",  pic:"☀️", ex:"It's sunny.",  type:"weather"},
+  {w:"snowy",  pic:"🌨️", ex:"It's snowy.",  type:"weather"},
+  {w:"cold",   pic:"🥶", ex:"It's cold.",   type:"weather"},
+  {w:"hot",    pic:"🥵", ex:"It's hot.",    type:"weather"},
+  {w:"summer", pic:"🏖️", ex:"I love summer.", type:"season"},
+  {w:"winter", pic:"⛄", ex:"I love winter.", type:"season"},
+  {w:"spring", pic:"🌸", ex:"I love spring.", type:"season"},
+  {w:"fall",   pic:"🍂", ex:"I love fall.",   type:"season"}
+];
+const byWord = Object.fromEntries(WORDS.map(x=>[x.w,x]));
+const cap = s => s[0].toUpperCase()+s.slice(1);
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; };
+
+/* ---------- voice ---------- */
+let rate = 0.65, voice = null;
+const synth = window.speechSynthesis;
+if(!synth) document.getElementById("novoice").hidden = false;
+function pickVoice(){
+  if(!synth) return;
+  const vs = synth.getVoices().filter(v=>/^en[-_]/i.test(v.lang));
+  voice = vs.find(v=>/Google US English|Samantha|Aria|Jenny/i.test(v.name)) || vs.find(v=>/en[-_]US/i.test(v.lang)) || vs[0] || null;
+}
+if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
+function say(text, onend){
+  if(!synth){ onend&&onend(); return; }
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; u.rate = rate; if(voice) u.voice = voice;
+  if(onend) u.onend = onend;
+  synth.speak(u);
+}
+document.querySelectorAll(".speed button").forEach(b=>b.addEventListener("click",()=>{
+  rate = +b.dataset.rate;
+  document.querySelectorAll(".speed button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  say("Hello!");
+}));
+
+/* ---------- tabs ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", x===t));
+  ["learn","t1","t2"].forEach(id=>document.getElementById(id).hidden = id!==t.dataset.panel);
+  if(synth) synth.cancel();
+}));
+
+/* ---------- learn ---------- */
+function makeCard(x){
+  const b = document.createElement("button");
+  b.type="button"; b.className="card"; b.id="card-"+x.w;
+  b.innerHTML = `<span class="pic" aria-hidden="true">${x.pic}</span><span class="word">${x.w}</span><span class="ex">${x.ex}</span><span class="spk">🔊 Listen</span>`;
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("playing"));
+    b.classList.add("playing");
+    say(x.w, ()=>setTimeout(()=>say(x.ex, ()=>b.classList.remove("playing")),350));
+  });
+  return b;
+}
+WORDS.forEach(x=>document.getElementById(x.type==="weather"?"cards-weather":"cards-seasons").appendChild(makeCard(x)));
+
+/* ---------- shared bits ---------- */
+function progressHTML(i,n){ return `<div class="progress"><span>${i+1} / ${n}</span><div class="bar"><i style="width:${(i/n)*100}%"></i></div></div>`; }
+function finish(box, score, n, restart){
+  const stars = score>=n-1 ? "⭐⭐⭐" : score>=Math.ceil(n/2) ? "⭐⭐" : "⭐";
+  const msg = score===n ? "Excellent! All correct!" : score>=Math.ceil(n/2) ? "Good job!" : "Nice try! Practise again.";
+  box.innerHTML = `<div class="done" style="display:flex;flex-direction:column;gap:10px;align-items:center">
+    <div class="stars">${stars}</div><p class="score">${score} / ${n}</p><p class="feedback ok">${msg}</p>
+    <div class="row"><button class="btn solid" type="button" id="${box.id}-again">Play again</button></div></div>`;
+  say(msg);
+  document.getElementById(box.id+"-again").addEventListener("click",restart);
+}
+
+/* ---------- Task 1: listen & choose ---------- */
+const t1 = {box:document.getElementById("t1-box")};
+function t1Start(){ t1.order = shuffle(WORDS); t1.i=0; t1.score=0; t1Render(); }
+function t1Render(){
+  const n=t1.order.length; if(t1.i>=n) return finish(t1.box,t1.score,n,t1Start);
+  const target=t1.order[t1.i];
+  const others=shuffle(WORDS.filter(x=>x!==target)).slice(0,3);
+  const opts=shuffle([target,...others]);
+  t1.tries=0;
+  t1.box.innerHTML = progressHTML(t1.i,n)+
+    `<button class="big-listen" type="button" id="t1-listen">🔊 Listen</button>
+     <div class="choices">${opts.map(o=>`<button class="choice" type="button" id="t1-${o.w}" data-w="${o.w}" aria-label="${o.w}"><span class="pic" aria-hidden="true">${o.pic}</span></button>`).join("")}</div>
+     <p class="feedback" id="t1-fb" aria-live="polite"></p>
+     <div class="row" id="t1-next" hidden><button class="btn solid" type="button">Next ➜</button></div>`;
+  const play=()=>say(target.w);
+  document.getElementById("t1-listen").addEventListener("click",play);
+  t1.box.querySelector("#t1-next button").addEventListener("click",()=>{t1.i++;t1Render();});
+  t1.box.querySelectorAll(".choice").forEach(c=>c.addEventListener("click",()=>{
+    const fb=document.getElementById("t1-fb");
+    if(c.dataset.w===target.w){
+      if(t1.tries===0) t1.score++;
+      c.classList.add("right");
+      c.innerHTML += `<span>${target.w}</span>`;
+      t1.box.querySelectorAll(".choice").forEach(x=>x.disabled=true);
+      fb.className="feedback ok"; fb.textContent="✔ Yes! "+cap(target.w)+"!";
+      say("Yes! "+target.w);
+      document.getElementById("t1-next").hidden=false;
+    } else {
+      t1.tries++; c.classList.add("wrong"); c.disabled=true;
+      fb.className="feedback no"; fb.textContent="✘ Try again. Listen one more time.";
+      say("Try again.", ()=>setTimeout(play,300));
+    }
+  }));
+}
+t1Start();
+
+/* ---------- Task 2: complete the sentence ---------- */
+const SENTENCES = [
+  {pic:"☀️", s:"It is ___ today.", a:"sunny", opts:["sunny","snowy","rainy"]},
+  {pic:"☂️", s:"Take an umbrella. It is ___.", a:"rainy", opts:["hot","rainy","sunny"]},
+  {pic:"🧤", s:"In winter, it is ___.", a:"cold", opts:["hot","cold","windy"]},
+  {pic:"🏖️", s:"In ___, it is hot.", a:"summer", opts:["winter","summer","fall"]},
+  {pic:"🌷", s:"Flowers grow in ___.", a:"spring", opts:["spring","winter","fall"]},
+  {pic:"🍁", s:"The leaves fall in ___.", a:"fall", opts:["summer","spring","fall"]},
+  {pic:"🪁", s:"My kite can fly. It is ___.", a:"windy", opts:["windy","cold","snowy"]},
+  {pic:"⛄", s:"It is ___. I can make a snowman.", a:"snowy", opts:["sunny","hot","snowy"]},
+  {pic:"🍦", s:"It is ___. I want ice cream.", a:"hot", opts:["cold","hot","rainy"]},
+  {pic:"🧣", s:"I wear a scarf in ___.", a:"winter", opts:["summer","winter","spring"]}
+];
+const t2 = {box:document.getElementById("t2-box")};
+function t2Start(){ t2.order=shuffle(SENTENCES); t2.i=0; t2.score=0; t2Render(); }
+function full(q){ return q.s.replace("___", q.a); }
+function t2Render(){
+  const n=t2.order.length; if(t2.i>=n) return finish(t2.box,t2.score,n,t2Start);
+  const q=t2.order[t2.i]; t2.tries=0;
+  const parts=q.s.split("___");
+  t2.box.innerHTML = progressHTML(t2.i,n)+
+    `<div class="scene" aria-hidden="true">${q.pic}</div>
+     <p class="sentence">${parts[0]}<span class="gap" id="t2-gap">&nbsp;?&nbsp;</span>${parts[1]}</p>
+     <div class="choices words" style="grid-template-columns:repeat(3,1fr)">${shuffle(q.opts).map(o=>`<button class="choice" type="button" id="t2-${o}" data-w="${o}">${o}</button>`).join("")}</div>
+     <p class="feedback" id="t2-fb" aria-live="polite"></p>
+     <div class="row" id="t2-next" hidden>
+       <button class="btn" type="button" id="t2-hear">🔊 Hear it</button>
+       <button class="btn solid" type="button" id="t2-go">Next ➜</button></div>`;
+  document.getElementById("t2-go").addEventListener("click",()=>{t2.i++;t2Render();});
+  document.getElementById("t2-hear").addEventListener("click",()=>say(full(q)));
+  t2.box.querySelectorAll(".choice").forEach(c=>c.addEventListener("click",()=>{
+    const fb=document.getElementById("t2-fb");
+    if(c.dataset.w===q.a){
+      if(t2.tries===0) t2.score++;
+      c.classList.add("right");
+      document.getElementById("t2-gap").textContent=q.a;
+      t2.box.querySelectorAll(".choice").forEach(x=>x.disabled=true);
+      fb.className="feedback ok"; fb.textContent="✔ Correct!";
+      say(full(q));
+      document.getElementById("t2-next").hidden=false;
+    } else {
+      t2.tries++; c.classList.add("wrong"); c.disabled=true;
+      fb.className="feedback no"; fb.textContent="✘ Not this one. Try again!";
+      say("Try again.");
+    }
+  }));
+}
+t2Start();
+</script>
+
+</body></html>
